@@ -22,11 +22,11 @@ Here is a rough summary of what I have achieved:-
 Note that this is just an experimental project done over a weekend that might be of interest to others interested in parallelism & Python evolution.
 
 
-## Usage
+## Installation
 Please use Python 3.12 & above for testing this out.
 Here, the commands given are for Linux & might require tweaking on other operating systems.
 
-1. [REQUIRED] Create & activate a virtual environment 
+1. Create & activate a virtual environment 
 `python3.12 -m venv .venv && source .venv/bin/activate`
 
 1. Add `benchmarking` directory from this folder is treated as a Python source directory. 
@@ -38,8 +38,19 @@ Here, the commands given are for Linux & might require tweaking on other operati
 1. Setup Python extension locally.
 `python3 setup.py install`
 
-1. Run demo function
+1. Run demo code to validate things are working fine
 `python3 demo.py`
+
+## Usage
+```py
+from subinterpreter_parallelism import parallel
+
+# Run 3 threads of pure python functions in parallel using sub-interpreters.
+result = parallel(['module1', 'func1', (arg11, arg12, arg13),)],
+                  ['module2', 'func2', (arg21, arg22)],
+                  ['module3', 'func3', tuple()])
+```
+
 
 ## Statistics
 Using normal Python threads, we can't gain any performance improvement for CPU bound tasks in CPython due to GIL contention. Hence, comparing parallelism using a simple factorial function, we get the following statistics:-
@@ -61,7 +72,7 @@ Out of the total time taken for running a functions parallely using sub-interpre
 
 ## Takeaways
 
-1. Using sub-interpreter paralllelism, I was able to verify that the Python process is constantly hitting close to full CPU utilization across all cores (1995% CPU utilization for machine with 20 cores). Note that with regular Python threads, the CPU utilization, as expected, hovers around 100% (i.e. almost full utilization of a single core).
+1. Using sub-interpreter paralllelism, I was able to verify that the Python process is constantly hitting close to full CPU utilization across all cores (1995% CPU utilization for machine with 20 cores). Note that with regular Python threads, CPU utilization hovers around 100% as expected (i.e. almost full utilization of a single core).
 2. Significantly (>20%) better performance with subinterpreter parallelism compared to multi-processing.
 3. Due to the inherent slowness associated with a interpreted language, it's still better to implement the CPU-bound part of the functionality in C++ using Python extensions.
 4. With Python 3.13, much of this work would be redundant as interpreters would be made part of the stdlib itself. However, it's still fascinating to see how we can achieve similar results in Python 3.12.
