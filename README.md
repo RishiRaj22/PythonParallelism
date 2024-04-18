@@ -1,5 +1,7 @@
 # True parallelism in pure-Python code
 
+Accompanying article: [rishiraj.me/articles/2024-04/python_subinterpreter_parallelism](https://rishiraj.me/articles/2024-04/python_subinterpreter_parallelism)
+
 This is a proof-of-concept implementation of running "pure" Python code truly parallely in a single CPython process. This is achieved utilizing the new [per-interpreter GIL](https://peps.python.org/pep-0684/) construct from Python 3.12.
 
 Here is a rough summary of what I have achieved:-
